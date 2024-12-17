@@ -2,7 +2,7 @@ import { use } from "react";
 
 import { MealsContext } from "../store/meals-context";
 
-function MealItem({name, price, description, image}){
+function MealItem({name, price, description, image, id}){
 
 	const { addMealItemToCart } = use(MealsContext);
 
@@ -12,7 +12,11 @@ function MealItem({name, price, description, image}){
 			<h3>{name}</h3>
 			<p className="meal-item-price">${price}</p>
 			<p className="meal-item-description">{description}</p>
-			<button className="button meal-item-actions">Add to Cart</button>
+			<button
+				onClick={() => addMealItemToCart(id)} 
+			  className="button meal-item-actions">
+				Add to Cart
+			</button>
 		</article>
 	)
 }

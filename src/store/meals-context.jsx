@@ -1,7 +1,9 @@
 import { createContext, useState, useEffect } from "react";
 
 export const MealsContext = createContext({
-	meals: []
+	meals: [],
+	cart: [],
+	addMealItemToCart: () => {}
 });
 
 export function MealsContextProvider({children}){
@@ -19,8 +21,14 @@ export function MealsContextProvider({children}){
 		loadMeals();
 	}, [])
 
+	function addMealItemToCart(id){
+		setCart((prevCart) => [id, ...prevCart])
+	}
+
 	const contextValue = {
 		meals: meals,
+		cart: cart,
+		addMealItemToCart: addMealItemToCart
 	}
 
 	return <MealsContext value={contextValue}>
