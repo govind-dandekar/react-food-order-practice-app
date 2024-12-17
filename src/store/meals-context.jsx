@@ -4,10 +4,10 @@ export const MealsContext = createContext({
 	meals: []
 });
 
-export function MealsContextProvider({cildren}){
-	const [meals, setMeals] = useState({
-		meals: []
-	});
+export function MealsContextProvider({children}){
+	const [meals, setMeals] = useState([]);
+
+	const [cart, setCart] = useState([])
 
 	useEffect(() => {
 		async function loadMeals(){
@@ -19,16 +19,11 @@ export function MealsContextProvider({cildren}){
 		loadMeals();
 	}, [])
 
-
-
 	const contextValue = {
-		meals: meals
+		meals: meals,
 	}
 
-	return 
-	(
-		<MealsContext value={contextValue}>
+	return <MealsContext value={contextValue}>
 			{children}
-		</MealsContext>
-	)
+	</MealsContext>
 }
