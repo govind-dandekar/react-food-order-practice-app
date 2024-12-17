@@ -21,8 +21,9 @@ export function MealsContextProvider({children}){
 		loadMeals();
 	}, [])
 
+	// update to include description and price
 	function addMealItemToCart(id){
-		setCart((prevCart) => [id, ...prevCart])
+		setCart((prevState) => [id, ...prevState])
 	}
 
 	const contextValue = {
