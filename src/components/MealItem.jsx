@@ -13,7 +13,7 @@ function MealItem({name, price, description, image, id}){
 			<p className="meal-item-price">${price}</p>
 			<p className="meal-item-description">{description}</p>
 			<button
-				onClick={() => addMealItemToCart(id)} 
+				onClick={() => addMealItemToCart(id, name, price)} 
 			  className="button meal-item-actions">
 				Add to Cart
 			</button>

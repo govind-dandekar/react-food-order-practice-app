@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useMemo } from "react";
 
 export const MealsContext = createContext({
 	meals: [],
@@ -6,6 +6,7 @@ export const MealsContext = createContext({
 	addMealItemToCart: () => {}
 });
 
+// add meal quantities
 export function MealsContextProvider({children}){
 	const [meals, setMeals] = useState([]);
 
@@ -21,9 +22,22 @@ export function MealsContextProvider({children}){
 		loadMeals();
 	}, [])
 
-	// update to include description and price
-	function addMealItemToCart(id){
-		setCart((prevState) => [id, ...prevState])
+	function addMealItemToCart(id, name, price){	
+		setCart((prevState) => {
+			const mealIndex = prevState.findIndex((meal) => meal.id === id);
+			// console.log(mealIndex);
+
+			// update state immutably
+			if (mealIndex !== -1){
+				const newState = [...prevState.slice(0, mealIndex),
+					{...prevState[mealIndex], quantity: prevState[mealIndex].quantity + 1},
+					...prevState.slice(mealIndex + 1)
+				];
+				return newState
+			} else {
+				return [...prevState, {id, name, price, quantity: 1}]
+			}
+		})
 	}
 
 	const contextValue = {
