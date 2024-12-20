@@ -7,18 +7,13 @@ import CartModal from './CartModal';
 
 function Header(){
 
-	const { cart } = use(MealsContext);
+	const { cartQuantity } = use(MealsContext);
 
 	const dialog = useRef();
 
 	function handleOpenCart(){
 		dialog.current.open();
 	}
-
-	// calculate number of discrete mealItems in cart
-	let cartQuantity = cart.reduce((previousValue, currentValue) => {
-		return previousValue + currentValue.quantity
-	}, 0);
 
 	return (
 		<div id="main-header">

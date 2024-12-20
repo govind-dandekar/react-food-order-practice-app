@@ -3,7 +3,10 @@ import { createContext, useState, useEffect, useMemo } from "react";
 export const MealsContext = createContext({
 	meals: [],
 	cart: [],
-	addMealItemToCart: () => {}
+	cartQuantity: 0,
+	cartTotal: 0,
+	addMealItemToCart: () => {},
+	incOrDecMealItemInCart: () => {}
 });
 
 // add meal quantities
@@ -25,8 +28,7 @@ export function MealsContextProvider({children}){
 	function addMealItemToCart(id, name, price){	
 		setCart((prevState) => {
 			const mealIndex = prevState.findIndex((meal) => meal.id === id);
-			// console.log(mealIndex);
-
+		
 			// update state immutably
 			if (mealIndex !== -1){
 				const newState = [...prevState.slice(0, mealIndex),
@@ -40,10 +42,49 @@ export function MealsContextProvider({children}){
 		})
 	}
 
+	function incOrDecMealItemInCart(id, operator){
+		setCart((prevState) => {
+			const mealIndex = prevState.findIndex((meal) => meal.id === id )
+
+			if (prevState[mealIndex].quantity === 0 && operator === 'subtract'){
+				return prevState;
+			}
+
+			if (operator === 'add') {
+				const newState = [...prevState.slice(0, mealIndex),
+					{...prevState[mealIndex], quantity: prevState[mealIndex].quantity + 1},
+					...prevState.slice(mealIndex + 1)
+				]
+
+				return newState;
+			} else {
+				const newState = [...prevState.slice(0, mealIndex),
+					{...prevState[mealIndex], quantity: prevState[mealIndex].quantity - 1},
+					...prevState.slice(mealIndex + 1)
+				]
+
+				return newState;
+			}
+		})
+	}
+
+	// calculate number of discrete mealItems in cart
+	let cartQuantity = cart.reduce((previousValue, currentValue) => {
+		return previousValue + currentValue.quantity
+	}, 0);
+
+	// calculate total price of items in cart
+	let cartTotal = cart.reduce((previousValue, currentValue) => {
+		return previousValue + currentValue.quantity * currentValue.price
+	}, 0)
+
 	const contextValue = {
 		meals: meals,
 		cart: cart,
-		addMealItemToCart: addMealItemToCart
+		cartQuantity: cartQuantity,
+		cartTotal: cartTotal,
+		addMealItemToCart: addMealItemToCart,
+		incOrDecMealItemInCart: incOrDecMealItemInCart
 	}
 
 	return <MealsContext value={contextValue}>
