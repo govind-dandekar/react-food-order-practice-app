@@ -21,6 +21,9 @@ const CartModal = forwardRef(function CartModal(props, ref){
 		return {
 			open(){
 				dialog.current.showModal();
+			},
+			close(){
+				dialog.current.close();
 			}
 		}
 	})
@@ -54,7 +57,9 @@ const CartModal = forwardRef(function CartModal(props, ref){
 						Close
 					</button>
 					<button 
+						onClick={() => updateModal('checkout')}
 						className="button"
+
 					>
 						Go to Checkout
 					</button>

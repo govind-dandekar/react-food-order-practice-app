@@ -2,41 +2,49 @@ import { use, useRef } from 'react';
 
 import foodImage from '/logo.jpg'
 
-import { MealsContext, modalContent } from '../store/meals-context';
+import { MealsContext } from '../store/meals-context';
 import CartModal from './CartModal';
+import CheckoutModal from './CheckoutModal';
 
 function Header(){
 
-	const { cartQuantity } = use(MealsContext);
+	const { cartQuantity, modalContent, updateModal } = use(MealsContext);
 
+	// using refs and context doesn't feel like the best way to
+	// solve this; check instructor answer when done
 	const cartDialog = useRef();
+	const checkoutDialog = useRef();
 
-	function handleOpenCart(){
+	if (modalContent === 'cart'){
 		cartDialog.current.open();
+	} else if (modalContent === 'checkout') {
+		cartDialog.current.close();
+		checkoutDialog.current.open();
 	}
 
-	// add context state tied to which modal is showing
-	// cartModal, checkoutModal, confirmationModal, noModal
-	// set Refs and open with fx that calls open()
-	// based on context state setting
 
-	// add updateModal logic to cartModal (and checkout and confirm modals)
 
 	return (
+		<>
 		<div id="main-header">
 			<div id="title">
 				<img src={foodImage} alt="food app icon"/>
 				<h1>React Food</h1>
 			</div>
 			<nav>
-				<button className="text-button" onClick={handleOpenCart}>
+				<button className="text-button" onClick={() => updateModal('cart')}>
 					Cart ({cartQuantity})
 				</button>
 			</nav>
-			<CartModal 
-				ref={cartDialog}
-			/>
+
+			
 		</div>
+		<CartModal 
+			ref={cartDialog}
+		/>
+		<CheckoutModal 
+			ref={checkoutDialog}/>
+		</>
 	)
 }
 
