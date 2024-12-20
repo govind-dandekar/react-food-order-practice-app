@@ -5,15 +5,17 @@ export const MealsContext = createContext({
 	cart: [],
 	cartQuantity: 0,
 	cartTotal: 0,
+	modalContent: "none",
 	addMealItemToCart: () => {},
-	incOrDecMealItemInCart: () => {}
+	incOrDecMealItemInCart: () => {},
+	updateModal: () => {}
 });
 
 // add meal quantities
 export function MealsContextProvider({children}){
 	const [meals, setMeals] = useState([]);
-
-	const [cart, setCart] = useState([])
+	const [cart, setCart] = useState([]);
+	const [modalContent, setModalContent] = useState('none');
 
 	useEffect(() => {
 		async function loadMeals(){
@@ -78,13 +80,19 @@ export function MealsContextProvider({children}){
 		return previousValue + currentValue.quantity * currentValue.price
 	}, 0)
 
+	function updateModal(content){
+		setModalContent(content);
+	}
+
 	const contextValue = {
 		meals: meals,
 		cart: cart,
 		cartQuantity: cartQuantity,
 		cartTotal: cartTotal,
+		modalContent: modalContent,
 		addMealItemToCart: addMealItemToCart,
-		incOrDecMealItemInCart: incOrDecMealItemInCart
+		incOrDecMealItemInCart: incOrDecMealItemInCart,
+		updateModal: updateModal
 	}
 
 	return <MealsContext value={contextValue}>

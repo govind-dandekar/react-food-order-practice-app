@@ -2,18 +2,25 @@ import { use, useRef } from 'react';
 
 import foodImage from '/logo.jpg'
 
-import { MealsContext } from '../store/meals-context';
+import { MealsContext, modalContent } from '../store/meals-context';
 import CartModal from './CartModal';
 
 function Header(){
 
 	const { cartQuantity } = use(MealsContext);
 
-	const dialog = useRef();
+	const cartDialog = useRef();
 
 	function handleOpenCart(){
-		dialog.current.open();
+		cartDialog.current.open();
 	}
+
+	// add context state tied to which modal is showing
+	// cartModal, checkoutModal, confirmationModal, noModal
+	// set Refs and open with fx that calls open()
+	// based on context state setting
+
+	// add updateModal logic to cartModal (and checkout and confirm modals)
 
 	return (
 		<div id="main-header">
@@ -27,7 +34,7 @@ function Header(){
 				</button>
 			</nav>
 			<CartModal 
-				ref={dialog}
+				ref={cartDialog}
 			/>
 		</div>
 	)
