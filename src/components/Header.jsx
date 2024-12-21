@@ -20,6 +20,8 @@ function Header(){
 	} else if (modalContent === 'checkout') {
 		cartDialog.current.close();
 		checkoutDialog.current.open();
+	} else if (modalContent === 'confirm'){
+		checkoutDialog.current.close();
 	}
 
 
