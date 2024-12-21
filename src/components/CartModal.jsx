@@ -51,7 +51,7 @@ const CartModal = forwardRef(function CartModal(props, ref){
 				<div className="cart-total">${cartTotal.toFixed(2)}</div>
 				<div className="modal-actions">
 					<button 
-						onClick={() => dialog.current.close()}
+						onClick={() => updateModal('cartClose')}
 						className="text-button"
 					>
 						Close

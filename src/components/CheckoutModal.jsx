@@ -62,8 +62,6 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 					},
 					body: JSON.stringify(orderData)
 				})
-
-				// add handling of response and move on to confirmation page
 			}
 
 		const orderData = {
@@ -105,7 +103,6 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 			<h2>Checkout</h2>
 			<p>Amount: ${cartTotal}</p> 
 			<form 
-				action={formAction}
 				className="control"
 			>
 				<label htmlFor="name">
@@ -173,12 +170,18 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 					</ul>}
 			</div>
 				<div className="modal-actions">
-					<button className="text-button">Close</button>
-					<button className='button'>Submit Order</button>
+					<button 
+						className="text-button" 
+						onClick={() => updateModal('checkoutClose')}>
+							Close
+					</button>
+					<button 
+						className='button' 
+						formAction={formAction}>
+						Submit Order
+					</button>
 			</div>
 			</form>
-			
-			
 		</dialog>
 	)
 })
