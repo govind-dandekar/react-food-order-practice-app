@@ -33,34 +33,29 @@ function Header(){
 		confirmationDialog.current.close();
 	}
 
-
-
 	return (
 		<>
-		<div id="main-header">
-			<div id="title">
-				<img src={foodImage} alt="food app icon"/>
-				<h1>React Food</h1>
+			<div id="main-header">
+				<div id="title">
+					<img src={foodImage} alt="food app icon"/>
+					<h1>React Food</h1>
+				</div>
+				<nav>
+					<button className="text-button" onClick={() => updateModal('cart')}>
+						Cart ({cartQuantity})
+					</button>
+				</nav>
 			</div>
-			<nav>
-				<button className="text-button" onClick={() => updateModal('cart')}>
-					Cart ({cartQuantity})
-				</button>
-			</nav>
-
-			
-		</div>
-		<CartModal 
-			ref={cartDialog}
-		/>
-		<CheckoutModal 
-			ref={checkoutDialog}/>
-		<ConfirmationModal 
-			ref={confirmationDialog}	
-		/>
+			<CartModal 
+				ref={cartDialog}
+			/>
+			<CheckoutModal 
+				ref={checkoutDialog}
+			/>
+			<ConfirmationModal 
+				ref={confirmationDialog}	
+			/>
 		</>
-		
-
 	)
 }
 

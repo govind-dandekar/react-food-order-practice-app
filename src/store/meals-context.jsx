@@ -8,7 +8,8 @@ export const MealsContext = createContext({
 	modalContent: "none",
 	addMealItemToCart: () => {},
 	incOrDecMealItemInCart: () => {},
-	updateModal: () => {}
+	updateModal: () => {},
+	setCart: () => {}
 });
 
 // add meal quantities
@@ -92,7 +93,8 @@ export function MealsContextProvider({children}){
 		modalContent: modalContent,
 		addMealItemToCart: addMealItemToCart,
 		incOrDecMealItemInCart: incOrDecMealItemInCart,
-		updateModal: updateModal
+		updateModal: updateModal,
+		setCart: setCart
 	}
 
 	return <MealsContext value={contextValue}>

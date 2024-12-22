@@ -9,14 +9,6 @@ const CartModal = forwardRef(function CartModal(props, ref){
 	
 	const dialog = useRef();
 
-	useEffect(() => {
-		function calculateCart(){
-			console.log(cart);
-		}
-
-		calculateCart();
-	})
-
 	useImperativeHandle(ref, () => {
 		return {
 			open(){

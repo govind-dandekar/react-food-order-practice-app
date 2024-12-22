@@ -4,7 +4,7 @@ import { MealsContext } from '../store/meals-context';
 
 const ConfirmationModal = forwardRef(function ConfirmationModal(props, ref){
  
-	const { updateModal } = use(MealsContext);
+	const { updateModal, setCart } = use(MealsContext);
 	
 	const dialog = useRef();
 
@@ -18,7 +18,11 @@ const ConfirmationModal = forwardRef(function ConfirmationModal(props, ref){
 				} 
 			}
 		})
-	
+
+	function handleConfirmationClose(){
+		setCart([]);
+		updateModal('confirmationClose')
+	}
 	
 	return(
 	<dialog ref={dialog} className="modal">
@@ -28,7 +32,7 @@ const ConfirmationModal = forwardRef(function ConfirmationModal(props, ref){
 		<div className="modal-actions">
 			<button 
 				className="button"
-				onClick={() => updateModal("confirmationClose")}
+				onClick={handleConfirmationClose}
 			>
 				Okay
 			</button>

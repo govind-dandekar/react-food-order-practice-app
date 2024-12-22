@@ -53,15 +53,19 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 				}
 			}
 		} else {
-			// TODO: error handling for failed POST request
+			// ERROR HANDLING NOT WORKING
 			async function submitOrder(orderData){			
-				const response = await fetch('http://localhost:3000/orders', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify(orderData)
-				})
+				try{
+					const response = await fetch('http://localhost:3000/orders', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(orderData)
+					})
+				} catch (error) {
+					
+				}
 			}
 
 		const orderData = {
@@ -77,10 +81,23 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 			}	
 		}
 			
-		 submitOrder(orderData);
-		 updateModal('confirm');
-		 return { errors: null }
+		 const orderResponse = submitOrder(orderData);
 
+		 if (orderResponse){
+			 updateModal('confirm');
+			 return { errors: null }
+		 } else {
+			return {
+				errors: ["Failed to submit order.  Please try to submit again."],
+				enteredValues: {
+					name,
+					email,
+					streetAddress,
+					postalCode,
+					city
+				}
+			}
+		 }
 		}
 	}
 
