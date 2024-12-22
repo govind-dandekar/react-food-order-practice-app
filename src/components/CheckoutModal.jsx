@@ -53,53 +53,35 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 				}
 			}
 		} else {
-			// ERROR HANDLING NOT WORKING
+			// TODO: CHECK INSTRUCTOR SOLUTION FOR POST FAILURE HANDLING
 			async function submitOrder(orderData){			
-				try{
-					const response = await fetch('http://localhost:3000/orders', {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json'
-						},
-						body: JSON.stringify(orderData)
-					})
-				} catch (error) {
+				const response = await fetch('http://localhost:3000/orders', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(orderData)
+				})
+			}
 					
-				}
+			const orderData = {
+				order: {
+					items: cart,
+					customer: {
+						name: name,
+						email: email,
+						street: streetAddress,
+						['postal-code']: postalCode,
+						city: city
+					}
+				}	
 			}
-
-		const orderData = {
-			order: {
-				items: cart,
-				customer: {
-					name: name,
-					email: email,
-					street: streetAddress,
-					['postal-code']: postalCode,
-					city: city
-				}
-			}	
+			// TODO: REVIEW HTTP ASYNC HANDLING IN INSTRUCTOR SOLUTION
+			submitOrder(orderData);
+			updateModal('confirm');
+			return { errors: null };
+			} 
 		}
-			
-		 const orderResponse = submitOrder(orderData);
-
-		 if (orderResponse){
-			 updateModal('confirm');
-			 return { errors: null }
-		 } else {
-			return {
-				errors: ["Failed to submit order.  Please try to submit again."],
-				enteredValues: {
-					name,
-					email,
-					streetAddress,
-					postalCode,
-					city
-				}
-			}
-		 }
-		}
-	}
 
 	useImperativeHandle(ref, () => {
 		return {
@@ -111,7 +93,7 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 			} 
 		}
 	})
-
+	
 	return (
 		<dialog 
 			ref={dialog}
@@ -129,7 +111,6 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 					type="text"
 					id="name"
 					name="name"
-					value="FullName"
 					defaultValue={formState.enteredValues?.name}
 				/>
 				<br />
@@ -140,7 +121,6 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 					type="email"
 					id="email"
 					name="email"
-					value="test@example.com"
 					defaultValue={formState.enteredValues?.email}
 				/>
 				<br />
@@ -149,7 +129,6 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 					type="text"
 					id="street-address"
 					name="street-address"
-					value="123 Main St"
 					defaultValue={formState.enteredValues?.streetAddress}
 				/>
 				<br />
@@ -162,7 +141,6 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 							type="text"
 							id="postal-code"
 							name="postal-code"
-							value="12345"
 							defaultValue={formState.enteredValues?.postalCode}
 						/>
 					</div>
@@ -173,7 +151,6 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 							type="text"
 							id="city"
 							name="city"
-							value="San Francisco"
 							defaultValue={formState.enteredValues?.city}
 						/>
 					</div>
