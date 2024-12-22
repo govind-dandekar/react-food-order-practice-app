@@ -1,8 +1,7 @@
-import { useState, useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import { MealsContext } from '../store/meals-context';
 
 import MealItem from "./MealItem";
-import ErrorPage from './ErrorPage';
 
 function Meals(){
 	const {meals: contextMeals} = useContext(MealsContext);

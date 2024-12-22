@@ -11,8 +11,6 @@ function Header(){
 
 	const { cartQuantity, modalContent, updateModal } = use(MealsContext);
 
-	// using refs and context doesn't feel like the best way to
-	// solve this; check instructor answer when done
 	const cartDialog = useRef();
 	const checkoutDialog = useRef();
 	const confirmationDialog = useRef();

@@ -62,7 +62,6 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 				}
 			}
 		} else {
-			// TODO: CHECK INSTRUCTOR SOLUTION FOR POST FAILURE HANDLING
 			async function submitOrder(orderData){			
 				setIsPosting(true);
 				const response = await fetch('http://localhost:3000/orders', {
@@ -99,7 +98,7 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 					}
 				}	
 			}
-			// TODO: REVIEW HTTP ASYNC HANDLING IN INSTRUCTOR SOLUTION
+	
 			await submitOrder(orderData);
 			
 				if (postError){
@@ -121,6 +120,10 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 				}
 			} 
 		}
+
+	function handleCheckoutClose(){
+		updateModal('checkoutClose')
+	}
 
 	useImperativeHandle(ref, () => {
 		return {
@@ -210,8 +213,8 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 				<div className="modal-actions">
 					<button 
 						className="text-button" 
-						/* TODO: checkoutClose is resetting cart */
-						onClick={() => updateModal('checkoutClose')}>
+						formAction={handleCheckoutClose}
+					>
 							Close
 					</button>
 					<button 

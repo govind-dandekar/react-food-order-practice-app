@@ -51,7 +51,6 @@ const CartModal = forwardRef(function CartModal(props, ref){
 					<button 
 						onClick={() => updateModal('checkout')}
 						className="button"
-
 					>
 						Go to Checkout
 					</button>
