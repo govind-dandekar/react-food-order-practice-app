@@ -1,4 +1,11 @@
-import { use, useRef, useImperativeHandle, forwardRef, useActionState } from 'react';
+import { 
+		use, 
+		useRef, 
+		useImperativeHandle, 
+		forwardRef, 
+		useActionState,
+		useState 
+	} from 'react';
 
 import { MealsContext } from "../store/meals-context";
 
@@ -7,12 +14,14 @@ import { isEmail, hasMinLength } from '../util/validation'
 const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 	
 	const [formState, formAction] = useActionState(checkoutAction, {errors: null} )
+	const [isPosting, setIsPosting] = useState(false)
+	const [postError, setPostError] = useState({});
 
 	const { cartTotal, cart, updateModal } = use(MealsContext);
 	
 	const dialog = useRef();
 
-	function checkoutAction(prevFormState, formData){
+	async function checkoutAction(prevFormState, formData){
 		const name = formData.get('name');
 		const email = formData.get('email');
 		const streetAddress = formData.get('street-address');
@@ -55,6 +64,7 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 		} else {
 			// TODO: CHECK INSTRUCTOR SOLUTION FOR POST FAILURE HANDLING
 			async function submitOrder(orderData){			
+				setIsPosting(true);
 				const response = await fetch('http://localhost:3000/orders', {
 					method: 'POST',
 					headers: {
@@ -62,6 +72,19 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 					},
 					body: JSON.stringify(orderData)
 				})
+
+				console.log(response);
+
+				// failed submit logic
+				if (!response.ok){
+					setPostError(true);
+					setIsPosting(false);
+					errors.push('Failed to submit order.  Please try to resubmit.')
+				} else {
+				// successful submit logic
+				setIsPosting(false);
+				setPostError(false);
+				}
 			}
 					
 			const orderData = {
@@ -77,9 +100,25 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 				}	
 			}
 			// TODO: REVIEW HTTP ASYNC HANDLING IN INSTRUCTOR SOLUTION
-			submitOrder(orderData);
-			updateModal('confirm');
-			return { errors: null };
+			await submitOrder(orderData);
+			
+				if (postError){
+					// reset post error
+					setPostError(false);
+					return {
+						errors: errors,
+						enteredValues: {
+							name,
+							email,
+							streetAddress,
+							postalCode,
+							city
+						}
+					}
+				} else {
+					updateModal('confirm');
+					return { errors: null };
+				}
 			} 
 		}
 
@@ -111,6 +150,7 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 					type="text"
 					id="name"
 					name="name"
+					value="FullName"
 					defaultValue={formState.enteredValues?.name}
 				/>
 				<br />
@@ -121,6 +161,7 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 					type="email"
 					id="email"
 					name="email"
+					value="test@example.com"
 					defaultValue={formState.enteredValues?.email}
 				/>
 				<br />
@@ -129,6 +170,7 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 					type="text"
 					id="street-address"
 					name="street-address"
+					value="123 Main St"
 					defaultValue={formState.enteredValues?.streetAddress}
 				/>
 				<br />
@@ -141,6 +183,7 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 							type="text"
 							id="postal-code"
 							name="postal-code"
+							value="12345"
 							defaultValue={formState.enteredValues?.postalCode}
 						/>
 					</div>
@@ -151,6 +194,7 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 							type="text"
 							id="city"
 							name="city"
+							value="SF"
 							defaultValue={formState.enteredValues?.city}
 						/>
 					</div>
@@ -166,6 +210,7 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 				<div className="modal-actions">
 					<button 
 						className="text-button" 
+						/* TODO: checkoutClose is resetting cart */
 						onClick={() => updateModal('checkoutClose')}>
 							Close
 					</button>
