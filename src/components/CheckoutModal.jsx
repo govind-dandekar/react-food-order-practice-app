@@ -16,13 +16,15 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 	
 	const [formState, formAction] = useActionState(checkoutAction, {errors: null} )
 	const [isPosting, setIsPosting] = useState(false)
-	const [postError, setPostError] = useState({});
+	const [postError, setPostError] = useState();
 
 	const { cartTotal, cart, updateModal } = use(MealsContext);
 	
 	const dialog = useRef();
 
 	async function checkoutAction(prevFormState, formData){
+		setPostError(false);
+		
 		const name = formData.get('name');
 		const email = formData.get('email');
 		const streetAddress = formData.get('street-address');
@@ -104,7 +106,6 @@ const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 			
 				if (postError){
 					// reset post error
-					setPostError(false);
 					return {
 						errors: errors,
 						enteredValues: {
