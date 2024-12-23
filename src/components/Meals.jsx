@@ -14,7 +14,7 @@ function Meals(){
 						<MealItem 
 							key={id}
 							id={id}
-							image={'./../backend/public/' + image}
+							image={"http://localhost:3000/" + image}
 							name={name}
 							price={price}
 							description={description}

@@ -11,6 +11,7 @@ import { MealsContext } from "../store/meals-context";
 
 import { isEmail, hasMinLength } from '../util/validation'
 
+// TODO: fix CheckouModal submit order bug (seems to render twice)
 const CheckoutModal = forwardRef(function CheckoutModal(props, ref){
 	
 	const [formState, formAction] = useActionState(checkoutAction, {errors: null} )
